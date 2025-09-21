@@ -4,9 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-service = FirefoxService(executable_path=r'D:\загрузки\geckodriver-v0.35.0-win64\geckodriver.exe')
-
-driver = webdriver.Firefox(service=service)
+driver = webdriver.Firefox()
 
 driver.get("http://uitestingplayground.com/ajax")
 
