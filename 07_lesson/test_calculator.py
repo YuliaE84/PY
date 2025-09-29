@@ -1,26 +1,26 @@
-import unittest
+import pytest
 from selenium import webdriver
 from calculator_page import SlowCalculatorPage
 
 
-class TestCalculator(unittest.TestCase):
-    def setUp(self):
-        self.driver = webdriver.Chrome()
-        self.driver.get("https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html")
-        self.calculator_page = SlowCalculatorPage(self.driver)
+@pytest.fixture(scope="function")
+def browser():
+    driver = webdriver.Chrome()
+    yield driver
+    driver.quit()
 
-    def test_addition_with_delay(self):
-        self.calculator_page.set_delay('45')
-        
-        self.calculator_page.click_button(SlowCalculatorPage.BUTTON_7_LOCATOR)
-        self.calculator_page.click_button(SlowCalculatorPage.PLUS_BUTTON_LOCATOR)
-        self.calculator_page.click_button(SlowCalculatorPage.BUTTON_8_LOCATOR)
-        self.calculator_page.click_button(SlowCalculatorPage.EQUALS_BUTTON_LOCATOR)
-        
-        self.calculator_page.wait_until_result_displayed('15')
 
-    def tearDown(self):
-        self.driver.quit()
+def test_calculator(browser):
+    browser.get("https://bonigarcia.dev/selenium-webdriver-java/slow-calculator.html")
+    browser.calculator_page = SlowCalculatorPage(browser)
 
-if __name__ == "__main__":
-    unittest.main()
+    browser.calculator_page.set_delay('45')
+
+    browser.calculator_page.click_button(SlowCalculatorPage.BUTTON_7_LOCATOR)
+    browser.calculator_page.click_button(SlowCalculatorPage.PLUS_BUTTON_LOCATOR)
+    browser.calculator_page.click_button(SlowCalculatorPage.BUTTON_8_LOCATOR)
+    browser.calculator_page.click_button(SlowCalculatorPage.EQUALS_BUTTON_LOCATOR)
+
+    browser.calculator_page.wait_until_result_displayed('15')
+
+    browser.quit()

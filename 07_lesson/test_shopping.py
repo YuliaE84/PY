@@ -20,6 +20,7 @@ def test_shopping(browser):
     username = "standard_user"
     password = "secret_sauce"
 
+    browser.get(base_url)
     login_page = LoginPage(browser)
     login_page.enter_username(username)
     login_page.enter_password(password)
